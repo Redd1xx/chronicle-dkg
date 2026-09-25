@@ -2,7 +2,7 @@
 
 > **Livepeer Agent Hackathon Submission**  
 > **Track**: Track 1 — Livepeer Agent + OriginTrail DKG Track ($1,000)  
-> **Author**: Dr. Marcus Sterling ([@msterling-dkg](https://github.com/msterling-dkg) · marcus.sterling.dkg@gmail.com)  
+> **Author**: redd (omeyimi15@gmail.com)  
 > **Livepeer Creative MCP Endpoint**: `https://agent.livepeer.org/api/mcp/creative` (125 tools)  
 > **Knowledge Graph Infrastructure**: OriginTrail DKG v8 (NeuroWeb OTP:2043)  
 > **Participant Compute Model**: Hacker Packet $100 on connect (auto-reups every 24h)  
@@ -114,8 +114,7 @@ Open [http://localhost:3002](http://localhost:3002) in your browser.
 
 ## Author & Project Details
 
-- **Author**: Dr. Marcus Sterling
-- **GitHub**: [@msterling-dkg](https://github.com/msterling-dkg)
-- **Email**: marcus.sterling.dkg@gmail.com
+- **Author**: redd
+- **Email**: omeyimi15@gmail.com
 - **Track**: Track 1 — Livepeer Agent + OriginTrail DKG Track ($1,000)
 - **License**: MIT
