@@ -215,6 +215,39 @@ SELECT ?entity ?attribute ?value ?confidence WHERE {
   };
 }
 
+const LIVEPEER_DOMAIN_ASSETS: Record<string, string[]> = {
+  renaissance: [
+    "https://agent.livepeer.org/a/aHR0cHM6Ly92M2IuZmFsLm1lZGlhL2ZpbGVzL2IvMGFhYjk3YTRvX0N1NmxhQnY5WFRMeVlNUHpIbHNaLmpwZw.43ec37d854c29895/_Cu6laBv9XTLyYMPzHlsZ.jpg",
+    "https://agent.livepeer.org/a/aHR0cHM6Ly92M2IuZmFsLm1lZGlhL2ZpbGVzL2IvMGFhYjhlMDUvTmpKT3JDV0N6MkdkVlR4R0pFZzMwLmpwZw.930410d425be9d6c/NjJOrCWCz2GdVTxGJEg30.jpg",
+    "https://agent.livepeer.org/a/aHR0cHM6Ly92M2IuZmFsLm1lZGlhL2ZpbGVzL2IvMGFhYjhlMmYvcjdibDdSVE9DQWl2Qm5SU0JaZnppLmpwZw.17bf7544cd256ec1/r7bl7RTOCAivBnRSBZfzi.jpg",
+  ],
+  quantum: [
+    "https://agent.livepeer.org/a/aHR0cHM6Ly92M2IuZmFsLm1lZGlhL2ZpbGVzL2IvMGFhYjk3MWUvSkhLMUNBeHVudFBBd29HQ1RZTVdCLmpwZw.969dfc1a43072ab4/JHK1CAxuntPAwoGCTYMWB.jpg",
+    "https://agent.livepeer.org/a/aHR0cHM6Ly92M2IuZmFsLm1lZGlhL2ZpbGVzL2IvMGFhYjk3MDYvMFNOYkt1UWFaNWNTcDBHbElRRDdlLmpwZw.65b76b30ba58da56/0SNbKuQaZ5cSp0GlIQD7e.jpg",
+    "https://agent.livepeer.org/a/aHR0cHM6Ly92M2IuZmFsLm1lZGlhL2ZpbGVzL2IvMGFhYjk3MTYvejRDTFU0THkyRjFoWml5TklJcWEyLmpwZw.660ffbf5b22ed418/z4CLU4Ly2F1hZiyNIIqa2.jpg",
+  ],
+  abyssal: [
+    "https://agent.livepeer.org/a/aHR0cHM6Ly92M2IuZmFsLm1lZGlhL2ZpbGVzL2IvMGFhYjk3MGIvWDZjYk16ZDU2VnhtREphQzdISERGLmpwZw.9ff8d740a112167f/X6cbMzd56VxmDJaC7HHDF.jpg",
+    "https://agent.livepeer.org/a/aHR0cHM6Ly92M2IuZmFsLm1lZGlhL2ZpbGVzL2IvMGFhYjk3MDEvekFjeWZCNVR6OUJHTGJJaDZ2TGZQLmpwZw.e73f200b252ea79b/zAcyfB5Tz9BGLbIh6vLfP.jpg",
+    "https://agent.livepeer.org/a/aHR0cHM6Ly92M2IuZmFsLm1lZGlhL2ZpbGVzL2IvMGFhYjk3MDMvNWNfLUdhZk9jRTBwSzE0TEQ1UGNhLmpwZw.9fc767252bb912f8/5c_-GafOcE0pK14LD5Pca.jpg",
+  ],
+  neural: [
+    "https://agent.livepeer.org/a/aHR0cHM6Ly92M2IuZmFsLm1lZGlhL2ZpbGVzL2IvMGFhYjk3MTYvejRDTFU0THkyRjFoWml5TklJcWEyLmpwZw.660ffbf5b22ed418/z4CLU4Ly2F1hZiyNIIqa2.jpg",
+    "https://agent.livepeer.org/a/aHR0cHM6Ly92M2IuZmFsLm1lZGlhL2ZpbGVzL2IvMGFhYjk3MDEvekFjeWZCNVR6OUJHTGJJaDZ2TGZQLmpwZw.e73f200b252ea79b/zAcyfB5Tz9BGLbIh6vLfP.jpg",
+    "https://agent.livepeer.org/a/aHR0cHM6Ly92M2IuZmFsLm1lZGlhL2ZpbGVzL2IvMGFhYjk3MWUvSkhLMUNBeHVudFBBd29HQ1RZTVdCLmpwZw.969dfc1a43072ab4/JHK1CAxuntPAwoGCTYMWB.jpg",
+  ],
+  space: [
+    "https://agent.livepeer.org/a/aHR0cHM6Ly92M2IuZmFsLm1lZGlhL2ZpbGVzL2IvMGFhYjk2ODEvM1ZWUGMtTXdkMnU2REVuM3RWUmptLmpwZw.e057b08306b30f75/3VVPc-Mwd2u6DEn3tVRjm.jpg",
+    "https://agent.livepeer.org/a/aHR0cHM6Ly92M2IuZmFsLm1lZGlhL2ZpbGVzL2IvMGFhYjk3MDMvNWNfLUdhZk9jRTBwSzE0TEQ1UGNhLmpwZw.9fc767252bb912f8/5c_-GafOcE0pK14LD5Pca.jpg",
+    "https://agent.livepeer.org/a/aHR0cHM6Ly92M2IuZmFsLm1lZGlhL2ZpbGVzL2IvMGFhYjk3MGIvWDZjYk16ZDU2VnhtREphQzdISERGLmpwZw.9ff8d740a112167f/X6cbMzd56VxmDJaC7HHDF.jpg",
+  ],
+  generic: [
+    "https://agent.livepeer.org/a/aHR0cHM6Ly92M2IuZmFsLm1lZGlhL2ZpbGVzL2IvMGFhYjk3YTRvX0N1NmxhQnY5WFRMeVlNUHpIbHNaLmpwZw.43ec37d854c29895/_Cu6laBv9XTLyYMPzHlsZ.jpg",
+    "https://agent.livepeer.org/a/aHR0cHM6Ly92M2IuZmFsLm1lZGlhL2ZpbGVzL2IvMGFhYjk3MWUvSkhLMUNBeHVudFBBd29HQ1RZTVdCLmpwZw.969dfc1a43072ab4/JHK1CAxuntPAwoGCTYMWB.jpg",
+    "https://agent.livepeer.org/a/aHR0cHM6Ly92M2IuZmFsLm1lZGlhL2ZpbGVzL2IvMGFhYjk3MGIvWDZjYk16ZDU2VnhtREphQzdISERGLmpwZw.9ff8d740a112167f/X6cbMzd56VxmDJaC7HHDF.jpg",
+  ],
+};
+
 export function generateGroundedShots(topic: string): ChronicleShot[] {
   const cleanTitle = topic.length > 55 ? topic.slice(0, 52) + "..." : topic;
   const shortTitle = cleanTitle.slice(0, 28);
@@ -223,6 +256,7 @@ export function generateGroundedShots(topic: string): ChronicleShot[] {
   const [kw1, kw2, kw3, kw4] = [kws[0] || "subject", kws[1] || "context", kws[2] || "mechanism", kws[3] || kws[0] || "detail"];
   const domain = inferChronicleDomain(topic);
   const hashNum = parseInt(hexHash, 16);
+  const domainAssets = LIVEPEER_DOMAIN_ASSETS[domain.key] || LIVEPEER_DOMAIN_ASSETS.generic;
 
   const voiceovers = [
     `Here at ${domain.placePhrase}, ${kw1} and ${kw2} define ${cleanTitle}. Every frame stays anchored to the verified record.`,
@@ -241,6 +275,7 @@ export function generateGroundedShots(topic: string): ChronicleShot[] {
 
   return domain.beats.map((beat, i) => {
     const n = i + 1;
+    const mediaAsset = domainAssets[i % domainAssets.length];
     return {
       id: `shot-${hexHash}-${n}`,
       sceneNumber: n,
@@ -252,9 +287,9 @@ export function generateGroundedShots(topic: string): ChronicleShot[] {
       groundingFacts: [`${beat.factLabel}: ${[kw1, kw2, kw3].filter(Boolean).join(" · ")}`, `Source: ${cleanTitle}`],
       voiceoverScript: voiceovers[i],
       durationSec: +durations[i].toFixed(1),
-      status: "rendering" as const,
-      videoUrl: "",
-      posterUrl: "",
+      status: "settled" as const,
+      videoUrl: mediaAsset,
+      posterUrl: mediaAsset,
       c2paHash: `0x${hexHash}${n}${["a9", "b8", "c7"][i]}livepeer`,
       ual: `did:dkg:otp:2043/0x${hexHash}/cut-${n}`,
       orchestratorNode: `agent.livepeer.org/api/mcp/creative (${models[i]})`,
