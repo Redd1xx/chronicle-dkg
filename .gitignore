@@ -12,6 +12,8 @@ desktop.ini
 *.mp4
 *.mp3
 *.wav
+*.mov
+*.MOV
 *.tsbuildinfo
 next-env.d.ts
 
