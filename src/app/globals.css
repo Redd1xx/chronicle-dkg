@@ -92,3 +92,24 @@ body {
 .pb-safe {
   padding-bottom: max(env(safe-area-inset-bottom, 0px), 0.75rem);
 }
+.pl-safe {
+  padding-left: max(env(safe-area-inset-left, 0px), 0.75rem);
+}
+.pr-safe {
+  padding-right: max(env(safe-area-inset-right, 0px), 0.75rem);
+}
+
+/* Fast tap targets and smooth touch panning across mobile/tablet */
+button, a, input, select, textarea {
+  touch-action: manipulation;
+}
+
+/* Device Reduced Motion Preference */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -104,8 +104,8 @@ export function ExportFilmModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fade-in">
-      <div className="relative w-full max-w-lg bg-[#07090f] border border-white/15 rounded-2xl shadow-2xl p-6 sm:p-7 text-zinc-100 font-sans space-y-5">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md animate-fade-in">
+      <div className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto bg-[#07090f] border border-white/15 rounded-2xl shadow-2xl p-4 sm:p-7 text-zinc-100 font-sans space-y-4 sm:space-y-5">
         
         {/* Header */}
         <div className="flex items-center justify-between pb-3 border-b border-white/10">

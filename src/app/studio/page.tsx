@@ -49,6 +49,7 @@ export default function ChronicleStudioPage() {
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [aspectRatio, setAspectRatio] = useState<"2.39:1" | "16:9" | "1.43:1">("2.39:1");
+  const [mobileView, setMobileView] = useState<"stage" | "graph" | "sparql" | "proofs">("stage");
 
   // Modals & Inspection
   const [isC2paModalOpen, setIsC2paModalOpen] = useState<boolean>(false);
@@ -310,13 +311,20 @@ export default function ChronicleStudioPage() {
     if (!ctx) return;
 
     let animId: number;
-    let width = (canvas.width = canvas.parentElement?.clientWidth || 960);
-    let height = (canvas.height = canvas.parentElement?.clientHeight || 540);
+    const dpr = Math.min(typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1, 2);
+    let width = canvas.parentElement?.clientWidth || 960;
+    let height = canvas.parentElement?.clientHeight || 540;
+    canvas.width = Math.floor(width * dpr);
+    canvas.height = Math.floor(height * dpr);
+    ctx.scale(dpr, dpr);
 
     const handleResize = () => {
       if (!canvas.parentElement) return;
-      width = canvas.width = canvas.parentElement.clientWidth;
-      height = canvas.height = canvas.parentElement.clientHeight;
+      width = canvas.parentElement.clientWidth;
+      height = canvas.parentElement.clientHeight;
+      canvas.width = Math.floor(width * dpr);
+      canvas.height = Math.floor(height * dpr);
+      ctx.scale(dpr, dpr);
     };
     window.addEventListener("resize", handleResize);
 
@@ -448,8 +456,8 @@ export default function ChronicleStudioPage() {
           </div>
         </div>
 
-        {/* Center: Tactile Recessed OriginTrail DKG Workspace Dock */}
-        <div className="flex items-center bg-[#0a0c14] p-1 rounded-xl border border-white/10 shadow-[inset_0_2px_4px_rgba(0,0,0,0.85)] text-[11px] font-mono">
+        {/* Center: Tactile Recessed OriginTrail DKG Workspace Dock (Desktop) */}
+        <div className="hidden lg:flex items-center bg-[#0a0c14] p-1 rounded-xl border border-white/10 shadow-[inset_0_2px_4px_rgba(0,0,0,0.85)] text-[11px] font-mono">
           {[
             { id: "graph_inspector", label: "Knowledge Graph" },
             { id: "sparql_triples", label: "SPARQL Triples" },
@@ -480,11 +488,11 @@ export default function ChronicleStudioPage() {
               cinematicAudio.play("click");
               setIsPreferencesOpen(true);
             }}
-            className="px-2.5 py-1.5 rounded-lg bg-gradient-to-b from-[#1c1f2b] to-[#0e1017] hover:brightness-115 border-t border-white/15 border-b border-black/80 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_2px_4px_rgba(0,0,0,0.6)] text-[10px] font-mono text-zinc-300 flex items-center gap-1.5 active:translate-y-[0.5px] transition-all"
+            className="px-2.5 py-1.5 rounded-lg bg-gradient-to-b from-[#1c1f2b] to-[#0e1017] hover:brightness-115 border-t border-white/15 border-b border-black/80 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_2px_4px_rgba(0,0,0,0.6)] text-[10px] font-mono text-zinc-300 flex items-center gap-1.5 active:translate-y-[0.5px] transition-all shrink-0"
             title="Chronicle & Livepeer Settings"
           >
             <Sliders className="w-3.5 h-3.5 text-[#fbbf24]" />
-            <span>Preferences</span>
+            <span className="hidden sm:inline">Preferences</span>
             {hasCustomKey && <span className="w-1.5 h-1.5 rounded-full bg-[#fbbf24] animate-pulse" />}
           </button>
 
@@ -493,49 +501,112 @@ export default function ChronicleStudioPage() {
               cinematicAudio.play("click");
               setIsExportOpen(true);
             }}
-            className="px-3 py-1.5 rounded-lg bg-gradient-to-b from-[#242838] to-[#121520] hover:brightness-115 border-t border-white/20 border-b border-black/80 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_2px_5px_rgba(0,0,0,0.6)] text-white font-heading font-bold text-xs flex items-center gap-1.5 active:translate-y-[0.5px] transition-all"
+            className="px-3 py-1.5 rounded-lg bg-gradient-to-b from-[#242838] to-[#121520] hover:brightness-115 border-t border-white/20 border-b border-black/80 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_2px_5px_rgba(0,0,0,0.6)] text-white font-heading font-bold text-xs flex items-center gap-1.5 active:translate-y-[0.5px] transition-all shrink-0"
             title="Export Grounded Knowledge Asset"
           >
             <Database className="w-3.5 h-3.5 text-[#fbbf24]" />
-            <span>Export Asset</span>
+            <span className="hidden sm:inline">Export Asset</span>
+            <span className="sm:hidden">Export</span>
           </button>
 
           <button
             onClick={handleAnchorOnDkg}
             disabled={isMinting}
-            className="px-3.5 py-1.5 rounded-lg bg-gradient-to-b from-[#fcd34d] via-[#f59e0b] to-[#b45309] text-black font-heading font-extrabold text-xs hover:brightness-110 active:translate-y-[0.5px] transition-all shadow-[inset_0_1px_0_rgba(255,255,255,0.5),0_2px_8px_rgba(251,191,36,0.35)] border-t border-amber-200/60 flex items-center gap-1.5 disabled:opacity-50"
+            className="px-3 py-1.5 rounded-lg bg-gradient-to-b from-[#fcd34d] via-[#f59e0b] to-[#b45309] text-black font-heading font-extrabold text-xs hover:brightness-110 active:translate-y-[0.5px] transition-all shadow-[inset_0_1px_0_rgba(255,255,255,0.5),0_2px_8px_rgba(251,191,36,0.35)] border-t border-amber-200/60 flex items-center gap-1.5 disabled:opacity-50 shrink-0"
           >
             {isMinting ? (
               <RefreshCw className="w-3.5 h-3.5 animate-spin" />
             ) : (
               <Anchor className="w-3.5 h-3.5" />
             )}
-            <span>{isMinting ? "Anchoring..." : "Anchor on DKG"}</span>
+            <span className="hidden sm:inline">{isMinting ? "Anchoring..." : "Anchor on DKG"}</span>
+            <span className="sm:hidden">{isMinting ? "Anchoring..." : "Anchor"}</span>
           </button>
         </div>
       </header>
 
+      {/* Adaptive Mobile / Tablet View Switcher Dock (< lg) */}
+      <div className="lg:hidden flex items-center justify-between bg-[#070912] border-b border-white/10 px-2 py-1.5 shrink-0 overflow-x-auto no-scrollbar gap-1 text-[11px] font-mono select-none z-20">
+        <button
+          onClick={() => {
+            cinematicAudio.play("toggle");
+            setMobileView("stage");
+          }}
+          className={`flex-1 py-1 px-2 rounded-lg text-center font-heading font-bold whitespace-nowrap transition-all ${
+            mobileView === "stage"
+              ? "bg-[#fbbf24] text-black shadow-[0_1px_4px_rgba(0,0,0,0.6)]"
+              : "text-zinc-400 hover:text-white"
+          }`}
+        >
+          Archival Stage
+        </button>
+        <button
+          onClick={() => {
+            cinematicAudio.play("toggle");
+            setMobileView("graph");
+            setActiveTab("graph_inspector");
+          }}
+          className={`flex-1 py-1 px-2 rounded-lg text-center font-heading font-bold whitespace-nowrap transition-all ${
+            mobileView === "graph"
+              ? "bg-[#fbbf24] text-black shadow-[0_1px_4px_rgba(0,0,0,0.6)]"
+              : "text-zinc-400 hover:text-white"
+          }`}
+        >
+          DKG Graph
+        </button>
+        <button
+          onClick={() => {
+            cinematicAudio.play("toggle");
+            setMobileView("sparql");
+            setActiveTab("sparql_triples");
+          }}
+          className={`flex-1 py-1 px-2 rounded-lg text-center font-heading font-bold whitespace-nowrap transition-all ${
+            mobileView === "sparql"
+              ? "bg-[#fbbf24] text-black shadow-[0_1px_4px_rgba(0,0,0,0.6)]"
+              : "text-zinc-400 hover:text-white"
+          }`}
+        >
+          SPARQL
+        </button>
+        <button
+          onClick={() => {
+            cinematicAudio.play("toggle");
+            setMobileView("proofs");
+            setActiveTab("merkle_vault");
+          }}
+          className={`flex-1 py-1 px-2 rounded-lg text-center font-heading font-bold whitespace-nowrap transition-all ${
+            mobileView === "proofs"
+              ? "bg-[#fbbf24] text-black shadow-[0_1px_4px_rgba(0,0,0,0.6)]"
+              : "text-zinc-400 hover:text-white"
+          }`}
+        >
+          RFC-6962 Vault
+        </button>
+      </div>
+
       {/* 2. TOP WORKSPACE: ARCHIVAL VIEWPORT & DKG KNOWLEDGE INSPECTOR (SPLIT) */}
-      <div className="flex-1 grid grid-cols-12 min-h-0 overflow-hidden divide-x divide-white/10">
+      <div className="flex-1 grid grid-cols-12 min-h-0 overflow-hidden divide-y lg:divide-y-0 lg:divide-x divide-white/10">
         
-        {/* LEFT 8 COLUMNS: VERIFIED ARCHIVAL VIEWPORT (CLEAN, EXPANSIVE, UNCONGESTED) */}
-        <div className="col-span-8 h-full overflow-hidden flex flex-col bg-[#040508]">
+        {/* LEFT 8 COLUMNS: VERIFIED ARCHIVAL VIEWPORT */}
+        <div className={`col-span-12 lg:col-span-8 h-full overflow-hidden flex flex-col bg-[#040508] ${
+          mobileView === "stage" ? "flex" : "hidden lg:flex"
+        }`}>
           
           {/* Unified, High-End Direct Fact Grounding Bar */}
-          <div className="bg-[#070912] border-b border-white/10 px-4 py-2.5 flex items-center justify-between gap-3 shrink-0 z-20">
+          <div className="bg-[#070912] border-b border-white/10 px-3 sm:px-4 py-2 sm:py-2.5 flex items-center justify-between gap-2 sm:gap-3 shrink-0 z-20">
             <div className="flex items-center gap-2 flex-1 min-w-0">
-              <div className="flex items-center gap-1.5 text-xs font-mono text-[#fbbf24] shrink-0 font-bold">
+              <div className="hidden sm:flex items-center gap-1.5 text-xs font-mono text-[#fbbf24] shrink-0 font-bold">
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>Ground Fact:</span>
               </div>
 
-              <form onSubmit={(e) => { e.preventDefault(); handleDirectGround(); }} className="flex-1 flex items-center gap-2 min-w-0">
+              <form onSubmit={(e) => { e.preventDefault(); handleDirectGround(); }} className="flex-1 flex flex-wrap sm:flex-nowrap items-center gap-2 min-w-0">
                 <input
                   type="text"
                   value={directQuery}
                   onChange={(e) => setDirectQuery(e.target.value)}
                   placeholder="Enter historical event, NASA telemetry, scientific theorem..."
-                  className="flex-1 min-w-0 bg-black/70 border border-white/15 focus:border-[#fbbf24] text-xs font-mono text-white px-3 py-1.5 rounded-lg focus:outline-none placeholder:text-zinc-600 shadow-[inset_0_1px_3px_rgba(0,0,0,0.6)]"
+                  className="flex-1 min-w-[140px] sm:min-w-[200px] bg-black/70 border border-white/15 focus:border-[#fbbf24] text-xs font-mono text-white px-2.5 sm:px-3 py-1.5 rounded-lg focus:outline-none placeholder:text-zinc-600 shadow-[inset_0_1px_3px_rgba(0,0,0,0.6)]"
                 />
 
                 {/* Quick Presets Selector Dropdown */}
@@ -559,7 +630,7 @@ export default function ChronicleStudioPage() {
                 </select>
 
                 {/* Directorial Lens selector - Tactile Segment Switch */}
-                <div className="flex items-center bg-black/60 p-0.5 rounded-md border border-white/10 shadow-[inset_0_1px_2px_rgba(0,0,0,0.8)] shrink-0">
+                <div className="hidden md:flex items-center bg-black/60 p-0.5 rounded-md border border-white/10 shadow-[inset_0_1px_2px_rgba(0,0,0,0.8)] shrink-0">
                   {(["archival_35mm", "macro_blueprint", "cosmic_vista"] as const).map((style) => (
                     <button
                       key={style}
@@ -582,7 +653,7 @@ export default function ChronicleStudioPage() {
                 <button
                   type="submit"
                   disabled={isDirectGrounding || !directQuery.trim()}
-                  className="px-3.5 py-1.5 rounded-lg bg-gradient-to-b from-[#fcd34d] to-[#d97706] text-black font-heading font-extrabold text-xs flex items-center gap-1.5 shrink-0 shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_2px_8px_rgba(251,191,36,0.3)] border-t border-amber-200/50 hover:brightness-110 active:translate-y-[0.5px] disabled:opacity-40 cursor-pointer transition-all"
+                  className="px-3 py-1.5 rounded-lg bg-gradient-to-b from-[#fcd34d] to-[#d97706] text-black font-heading font-extrabold text-xs flex items-center gap-1.5 shrink-0 shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_2px_8px_rgba(251,191,36,0.3)] border-t border-amber-200/50 hover:brightness-110 active:translate-y-[0.5px] disabled:opacity-40 cursor-pointer transition-all"
                 >
                   {isDirectGrounding ? (
                     <>
@@ -592,7 +663,8 @@ export default function ChronicleStudioPage() {
                   ) : (
                     <>
                       <ShieldCheck className="w-3 h-3" />
-                      <span>Ground & Synthesize</span>
+                      <span className="hidden sm:inline">Ground & </span>
+                      <span>Synthesize</span>
                     </>
                   )}
                 </button>
@@ -601,36 +673,36 @@ export default function ChronicleStudioPage() {
           </div>
 
           {/* Master Archival Stage - Expansive, Uncluttered, Beautiful */}
-          <div className="flex-1 relative flex items-center justify-center p-3 sm:p-4 overflow-hidden bg-black min-h-0">
+          <div className="flex-1 relative flex items-center justify-center p-2 sm:p-4 overflow-hidden bg-black min-h-0">
             <div className="relative w-full h-full max-h-[560px] aspect-[16/9] rounded-xl overflow-hidden border border-white/15 shadow-[0_0_80px_rgba(0,0,0,0.95)] flex items-center justify-center bg-black">
               <canvas ref={canvasRef} className="w-full h-full block" />
 
               {/* Minimal Archival Header Badge (Non-Obtrusive, Crisp) */}
-              <div className="absolute top-3 left-4 z-20 font-mono text-[9px] flex items-center gap-2 bg-black/80 px-2.5 py-1 rounded-full border border-white/15 backdrop-blur-sm pointer-events-none">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#fbbf24]" />
-                <span className="text-[#fbbf24] font-bold">
+              <div className="absolute top-2 sm:top-3 left-2 sm:left-4 z-20 font-mono text-[8px] sm:text-[9px] flex items-center gap-1.5 sm:gap-2 bg-black/80 px-2 sm:px-2.5 py-1 rounded-full border border-white/15 backdrop-blur-sm pointer-events-none max-w-[90%] truncate">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#fbbf24] shrink-0" />
+                <span className="text-[#fbbf24] font-bold truncate">
                   {activeShot.id.startsWith("shot-custom")
                     ? "DKG ARCHIVE"
                     : activeTopicObj.title.toUpperCase()}
                 </span>
                 <span className="text-zinc-500">·</span>
-                <span className="text-zinc-300">SCENE 0{activeShot.sceneNumber}</span>
-                <span className="text-zinc-500">·</span>
-                <span className="text-emerald-400 font-semibold">C2PA ATTESTED</span>
+                <span className="text-zinc-300 shrink-0">SCENE 0{activeShot.sceneNumber}</span>
+                <span className="text-zinc-500 hidden sm:inline">·</span>
+                <span className="text-emerald-400 font-semibold hidden sm:inline">C2PA ATTESTED</span>
               </div>
 
               {/* Verified UAL Micro-Tag (Subtle Bottom Right) */}
-              <div className="absolute bottom-3 right-4 z-20 font-mono text-[8px] text-zinc-400 bg-black/70 px-2 py-0.5 rounded border border-white/10 backdrop-blur-sm pointer-events-none truncate max-w-[280px]">
+              <div className="absolute bottom-2 sm:bottom-3 right-2 sm:right-4 z-20 font-mono text-[7px] sm:text-[8px] text-zinc-400 bg-black/70 px-1.5 sm:px-2 py-0.5 rounded border border-white/10 backdrop-blur-sm pointer-events-none truncate max-w-[200px] sm:max-w-[280px]">
                 UAL: {activeShot.ual}
               </div>
             </div>
           </div>
 
           {/* Master Transport Deck - Spacious, Tactile, High-End */}
-          <div className="h-12 bg-[#030406] border-t border-white/10 px-4 flex items-center justify-between shrink-0 select-none">
+          <div className="min-h-12 py-2 px-3 sm:px-4 bg-[#030406] border-t border-white/10 flex flex-wrap sm:flex-nowrap items-center justify-between gap-2 shrink-0 select-none overflow-x-auto no-scrollbar">
             {/* Left: Recessed Counter & Physical Beveled Transport Keys */}
-            <div className="flex items-center gap-3">
-              <div className="flex items-center gap-2 bg-[#080a10] border border-amber-950/70 shadow-[inset_0_2px_4px_rgba(0,0,0,0.9)] px-3 py-1 rounded-md text-[11px] font-mono text-[#fbbf24] font-bold tracking-wider">
+            <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+              <div className="flex items-center gap-1.5 sm:gap-2 bg-[#080a10] border border-amber-950/70 shadow-[inset_0_2px_4px_rgba(0,0,0,0.9)] px-2 sm:px-3 py-1 rounded-md text-[10px] sm:text-[11px] font-mono text-[#fbbf24] font-bold tracking-wider">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#fbbf24] animate-pulse" />
                 <span>00:0{activeShotIdx + 1}:{formatSmpte(currentTime)}</span>
                 <span className="text-zinc-600">/</span>
@@ -672,8 +744,8 @@ export default function ChronicleStudioPage() {
             </div>
 
             {/* Center: Tactile Sequence Reel Selector */}
-            <div className="flex items-center gap-2">
-              <div className="flex items-center gap-1 bg-[#0a0c14] p-0.5 rounded-lg border border-white/10 shadow-[inset_0_1px_2px_rgba(0,0,0,0.8)]">
+            <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar py-0.5 max-w-full">
+              <div className="flex items-center gap-1 bg-[#0a0c14] p-0.5 rounded-lg border border-white/10 shadow-[inset_0_1px_2px_rgba(0,0,0,0.8)] shrink-0">
                 {shots.map((sh, idx) => (
                   <button
                     key={sh.id}
@@ -685,7 +757,7 @@ export default function ChronicleStudioPage() {
                         handleSynthesizeShot(idx);
                       }
                     }}
-                    className={`px-2.5 py-1 rounded text-[8.5px] font-mono transition-all active:translate-y-[0.5px] ${
+                    className={`px-2 sm:px-2.5 py-1 rounded text-[8px] sm:text-[8.5px] font-mono transition-all active:translate-y-[0.5px] shrink-0 ${
                       activeShotIdx === idx
                         ? "bg-[#fbbf24] text-black font-bold shadow-[0_1px_4px_rgba(0,0,0,0.7)]"
                         : "text-zinc-400 hover:text-white hover:bg-white/5"
@@ -701,26 +773,28 @@ export default function ChronicleStudioPage() {
                   cinematicAudio.play("click");
                   setIsCustomFactModalOpen(true);
                 }}
-                className="px-2.5 py-1 rounded-md text-[8.5px] font-mono transition-all border border-[#fbbf24]/40 bg-gradient-to-b from-[#2a2414] to-[#14120a] hover:brightness-115 text-[#fbbf24] font-bold shadow-[inset_0_1px_0_rgba(251,191,36,0.2),0_2px_4px_rgba(0,0,0,0.6)] active:translate-y-[0.5px] flex items-center gap-1"
+                className="px-2 sm:px-2.5 py-1 rounded-md text-[8px] sm:text-[8.5px] font-mono transition-all border border-[#fbbf24]/40 bg-gradient-to-b from-[#2a2414] to-[#14120a] hover:brightness-115 text-[#fbbf24] font-bold shadow-[inset_0_1px_0_rgba(251,191,36,0.2),0_2px_4px_rgba(0,0,0,0.6)] active:translate-y-[0.5px] flex items-center gap-1 shrink-0"
                 title="Ground your own historical fact or scientific event"
               >
                 <Plus className="w-2.5 h-2.5" />
-                <span>+ Custom Fact</span>
+                <span className="hidden sm:inline">+ Custom Fact</span>
+                <span className="sm:hidden">+ Fact</span>
               </button>
 
               <button
                 onClick={handleResynthesizeActiveShot}
                 disabled={isSynthesizing}
-                className="px-2.5 py-1 rounded-md text-[8.5px] font-mono transition-all border border-[#22d3ee]/40 bg-gradient-to-b from-[#10242e] to-[#081218] hover:brightness-115 text-[#22d3ee] font-bold shadow-[inset_0_1px_0_rgba(34,211,238,0.2),0_2px_4px_rgba(0,0,0,0.6)] active:translate-y-[0.5px] flex items-center gap-1.5 disabled:opacity-40"
+                className="px-2 sm:px-2.5 py-1 rounded-md text-[8px] sm:text-[8.5px] font-mono transition-all border border-[#22d3ee]/40 bg-gradient-to-b from-[#10242e] to-[#081218] hover:brightness-115 text-[#22d3ee] font-bold shadow-[inset_0_1px_0_rgba(34,211,238,0.2),0_2px_4px_rgba(0,0,0,0.6)] active:translate-y-[0.5px] flex items-center gap-1.5 disabled:opacity-40 shrink-0"
                 title="Synthesize shot on Livepeer Agent Creative MCP"
               >
                 {isSynthesizing ? <RefreshCw className="w-2.5 h-2.5 animate-spin" /> : <Sparkles className="w-2.5 h-2.5" />}
-                <span>{isSynthesizing ? "Synthesizing..." : "Livepeer Render"}</span>
+                <span className="hidden sm:inline">{isSynthesizing ? "Synthesizing..." : "Livepeer Render"}</span>
+                <span className="sm:hidden">{isSynthesizing ? "Rendering..." : "Render"}</span>
               </button>
             </div>
 
             {/* Right: Real-Time Fact Adherence & Merkle Verification Indicator */}
-            <div className="flex items-center gap-2 bg-[#0a0c14] px-2.5 py-1 rounded-lg border border-white/10 text-[8.5px] font-mono">
+            <div className="hidden xl:flex items-center gap-2 bg-[#0a0c14] px-2.5 py-1 rounded-lg border border-white/10 text-[8.5px] font-mono shrink-0">
               <span className="w-1.5 h-1.5 rounded-full bg-[#10b981] animate-pulse" />
               <span className="text-zinc-400">Consensus:</span>
               <span className="text-[#10b981] font-bold">99.8% Fact Adherence</span>
@@ -732,7 +806,9 @@ export default function ChronicleStudioPage() {
         </div>
 
         {/* RIGHT 4 COLUMNS: ORIGINTRAIL DKG KNOWLEDGE INSPECTOR & TRIPLE ENGINE */}
-        <div className="col-span-4 h-full overflow-y-auto bg-[#06070a] p-3 space-y-3">
+        <div className={`col-span-12 lg:col-span-4 h-full overflow-y-auto bg-[#06070a] p-3 space-y-3 ${
+          mobileView !== "stage" ? "block" : "hidden lg:block"
+        }`}>
           
           {/* TAB 1: KNOWLEDGE GRAPH INSPECTOR (DEFAULT ACTIVE) */}
           {activeTab === "graph_inspector" && (

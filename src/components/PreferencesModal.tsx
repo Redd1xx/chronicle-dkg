@@ -104,36 +104,36 @@ export function PreferencesModal({ isOpen, onClose, onKeyChange }: PreferencesMo
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
-      <div className="relative w-full max-w-xl bg-[#090b10] border border-white/10 rounded-xl shadow-2xl overflow-hidden text-zinc-100 font-sans">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
+      <div className="relative w-full max-w-xl max-h-[90vh] flex flex-col bg-[#090b10] border border-white/10 rounded-xl shadow-2xl overflow-hidden text-zinc-100 font-sans">
         
         {/* Titlebar */}
-        <div className="h-11 bg-[#040507] border-b border-white/10 px-4 flex items-center justify-between select-none">
-          <div className="flex items-center gap-2 text-xs font-heading font-bold text-white tracking-wide">
-            <Sliders className="w-3.5 h-3.5 text-[#fbbf24]" />
-            <span>Chronicle Settings · Livepeer Agent Creative MCP</span>
+        <div className="h-11 bg-[#040507] border-b border-white/10 px-4 flex items-center justify-between select-none shrink-0">
+          <div className="flex items-center gap-2 text-xs font-heading font-bold text-white tracking-wide truncate">
+            <Sliders className="w-3.5 h-3.5 text-[#fbbf24] shrink-0" />
+            <span className="truncate">Chronicle Settings · Livepeer Creative MCP</span>
           </div>
           <button
             onClick={onClose}
-            className="text-zinc-400 hover:text-white p-1 rounded transition-colors"
+            className="text-zinc-400 hover:text-white p-1 rounded transition-colors shrink-0"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Tab Strip */}
-        <div className="flex border-b border-white/10 bg-[#06080c] px-4 gap-1 text-xs font-mono">
+        <div className="flex border-b border-white/10 bg-[#06080c] px-2 sm:px-4 gap-1 text-xs font-mono overflow-x-auto no-scrollbar shrink-0">
           {[
-            { id: "engine", label: "Livepeer Creative MCP", icon: Cpu },
+            { id: "engine", label: "Livepeer MCP", icon: Cpu },
             { id: "graph", label: "OriginTrail DKG", icon: Database },
-            { id: "provenance", label: "Provenance & C2PA", icon: ShieldCheck },
+            { id: "provenance", label: "C2PA Provenance", icon: ShieldCheck },
           ].map((tab) => {
             const Icon = tab.icon;
             return (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as Tab)}
-                className={`flex items-center gap-1.5 py-2.5 px-3 border-b-2 transition-all ${
+                className={`flex items-center gap-1.5 py-2.5 px-2.5 sm:px-3 border-b-2 transition-all shrink-0 ${
                   activeTab === tab.id
                     ? "border-[#fbbf24] text-[#fbbf24] font-bold"
                     : "border-transparent text-zinc-400 hover:text-white"
@@ -147,7 +147,7 @@ export function PreferencesModal({ isOpen, onClose, onKeyChange }: PreferencesMo
         </div>
 
         {/* Tab Body */}
-        <div className="p-5 space-y-4">
+        <div className="p-4 sm:p-5 space-y-4 flex-1 overflow-y-auto">
           {activeTab === "engine" && (
             <div className="space-y-3">
               <div className="p-3 rounded-lg bg-black/40 border border-white/10 space-y-1.5">
@@ -324,7 +324,7 @@ export function PreferencesModal({ isOpen, onClose, onKeyChange }: PreferencesMo
         </div>
 
         {/* Footer */}
-        <div className="p-4 border-t border-white/10 bg-[#040507] flex items-center justify-between text-xs font-mono">
+        <div className="p-4 border-t border-white/10 bg-[#040507] flex items-center justify-between text-xs font-mono shrink-0">
           <button
             onClick={handleClear}
             disabled={!savedKey}

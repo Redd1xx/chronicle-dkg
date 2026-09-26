@@ -23,26 +23,42 @@ export function GraphExplorerCanvas({
     if (!ctx) return;
 
     let animId: number;
-    let width = (canvas.width = canvas.parentElement?.clientWidth || 500);
-    let height = (canvas.height = canvas.parentElement?.clientHeight || 300);
+    const dpr = Math.min(typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1, 2);
+    let width = canvas.parentElement?.clientWidth || 500;
+    let height = canvas.parentElement?.clientHeight || 300;
+    canvas.width = Math.floor(width * dpr);
+    canvas.height = Math.floor(height * dpr);
+    ctx.scale(dpr, dpr);
 
     const handleResize = () => {
       if (!canvas.parentElement) return;
-      width = canvas.width = canvas.parentElement.clientWidth;
-      height = canvas.height = canvas.parentElement.clientHeight;
+      width = canvas.parentElement.clientWidth;
+      height = canvas.parentElement.clientHeight;
+      canvas.width = Math.floor(width * dpr);
+      canvas.height = Math.floor(height * dpr);
+      ctx.scale(dpr, dpr);
     };
     window.addEventListener("resize", handleResize);
 
-    // Mouse interaction for 3D tilt
+    // Mouse and Touch interaction for 3D tilt
     const mouse = { x: 0, y: 0, targetX: 0, targetY: 0 };
     const handleMouseMove = (e: MouseEvent) => {
       const rect = canvas.getBoundingClientRect();
       mouse.targetX = ((e.clientX - rect.left) / width - 0.5) * 2;
       mouse.targetY = ((e.clientY - rect.top) / height - 0.5) * 2;
     };
+    const handleTouchMove = (e: TouchEvent) => {
+      if (e.touches && e.touches[0]) {
+        const rect = canvas.getBoundingClientRect();
+        mouse.targetX = ((e.touches[0].clientX - rect.left) / width - 0.5) * 2;
+        mouse.targetY = ((e.touches[0].clientY - rect.top) / height - 0.5) * 2;
+      }
+    };
     canvas.addEventListener("mousemove", handleMouseMove);
+    canvas.addEventListener("touchmove", handleTouchMove, { passive: true });
+    canvas.addEventListener("touchstart", handleTouchMove, { passive: true });
 
-    // Node click handler
+    // Node click/tap handler
     const handleClick = (e: MouseEvent) => {
       const rect = canvas.getBoundingClientRect();
       const clickX = e.clientX - rect.left;
@@ -50,12 +66,27 @@ export function GraphExplorerCanvas({
 
       projectedNodes.forEach((p) => {
         const dist = Math.hypot(clickX - p.screenX, clickY - p.screenY);
-        if (dist < 18) {
+        if (dist < 22) {
           onSelectNode(p.node);
         }
       });
     };
+    const handleTouchEnd = (e: TouchEvent) => {
+      if (e.changedTouches && e.changedTouches[0]) {
+        const rect = canvas.getBoundingClientRect();
+        const touchX = e.changedTouches[0].clientX - rect.left;
+        const touchY = e.changedTouches[0].clientY - rect.top;
+
+        projectedNodes.forEach((p) => {
+          const dist = Math.hypot(touchX - p.screenX, touchY - p.screenY);
+          if (dist < 24) {
+            onSelectNode(p.node);
+          }
+        });
+      }
+    };
     canvas.addEventListener("click", handleClick);
+    canvas.addEventListener("touchend", handleTouchEnd);
 
     let projectedNodes: { node: DkgEntityNode; screenX: number; screenY: number }[] = [];
     let rotationAngle = 0;
@@ -188,7 +219,10 @@ export function GraphExplorerCanvas({
       cancelAnimationFrame(animId);
       window.removeEventListener("resize", handleResize);
       canvas.removeEventListener("mousemove", handleMouseMove);
+      canvas.removeEventListener("touchmove", handleTouchMove);
+      canvas.removeEventListener("touchstart", handleTouchMove);
       canvas.removeEventListener("click", handleClick);
+      canvas.removeEventListener("touchend", handleTouchEnd);
     };
   }, [graph, selectedNodeId, onSelectNode]);
 

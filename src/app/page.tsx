@@ -187,7 +187,7 @@ export default function ChronicleLandingPage() {
                   <span className="text-[#34d399] font-mono font-bold">{activeDomain.confidence} Trust Score</span>
                 </div>
 
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                   {KNOWLEDGE_DOMAINS.map((domain, idx) => (
                     <button
                       key={domain.id}

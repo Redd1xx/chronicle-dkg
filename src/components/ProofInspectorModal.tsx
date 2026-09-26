@@ -80,8 +80,8 @@ export function ProofInspectorModal({ isOpen, onClose, shot, receipt }: ProofIns
   const displayExplorerUrl = proof?.explorerUrl || `${NEUROWEB_EXPLORER_BASE}/block/${displayBlockNum}`;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm animate-fade-in">
-      <div className="relative w-full max-w-2xl bg-[#0c0f17] border border-white/10 rounded-2xl p-6 sm:p-8 shadow-2xl overflow-hidden text-zinc-100">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-sm animate-fade-in">
+      <div className="relative w-full max-w-2xl max-h-[90vh] flex flex-col bg-[#0c0f17] border border-white/10 rounded-2xl p-4 sm:p-7 shadow-2xl overflow-hidden text-zinc-100">
         <div className="absolute top-0 right-0 w-64 h-64 bg-[#e5a93b]/10 rounded-full blur-3xl pointer-events-none" />
 
         <div className="flex items-start justify-between pb-4 border-b border-white/10 relative z-10">
@@ -200,7 +200,7 @@ export function ProofInspectorModal({ isOpen, onClose, shot, receipt }: ProofIns
           </div>
         </div>
 
-        <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
+        <div className="mt-4 pt-3 border-t border-white/10 flex flex-wrap sm:flex-nowrap items-center justify-between gap-2 shrink-0">
           <div className="flex items-center gap-2">
             <button
               onClick={handleCopy}
@@ -208,7 +208,7 @@ export function ProofInspectorModal({ isOpen, onClose, shot, receipt }: ProofIns
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-white/10 hover:bg-white/5 text-xs font-mono text-zinc-300 transition-colors disabled:opacity-40"
             >
               {copied ? <Check className="w-3.5 h-3.5 text-[#10b981]" /> : <Copy className="w-3.5 h-3.5" />}
-              <span>{copied ? "Copied JSON" : "Copy Proof JSON"}</span>
+              <span>{copied ? "Copied" : "Copy JSON"}</span>
             </button>
 
             <button
@@ -217,13 +217,13 @@ export function ProofInspectorModal({ isOpen, onClose, shot, receipt }: ProofIns
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-white/10 hover:bg-white/5 text-xs font-mono text-zinc-300 transition-colors"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${isVerifying ? "animate-spin text-[#fbbf24]" : ""}`} />
-              <span>{isVerifying ? "Querying RPC..." : "Re-query RPC"}</span>
+              <span>{isVerifying ? "Querying..." : "Re-query RPC"}</span>
             </button>
           </div>
 
           <button
             onClick={onClose}
-            className="px-5 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-mono text-white transition-colors"
+            className="px-4 sm:px-5 py-1.5 sm:py-2 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-mono text-white transition-colors ml-auto sm:ml-0"
           >
             Close Inspector
           </button>
