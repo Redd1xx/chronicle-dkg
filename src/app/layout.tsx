@@ -13,6 +13,9 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: "Chronicle DKG | Verifiable Knowledge-Grounded Media Studio",
   description: "Grounding Livepeer AI video generation in OriginTrail Decentralized Knowledge Graphs with verifiable C2PA provenance UALs.",
+  other: {
+    "ory-verify": "orynth-75d4b13169e24648a3e3e756ba8d6f24",
+  },
 };
 
 export default function RootLayout({
@@ -23,6 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <head>
+        <meta name="ory-verify" content="orynth-75d4b13169e24648a3e3e756ba8d6f24" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
